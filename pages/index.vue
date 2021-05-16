@@ -310,7 +310,7 @@ export default {
   },
   async created() {
     await this.getSeries();
-    await this.predictCovid();
+    // await this.predictCovid();
   },
   methods: {
     async getLiveSeries() {
