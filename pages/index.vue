@@ -277,7 +277,7 @@ export default {
   },
   head() {
     return {
-      title: "Fuzzy Time Series"
+      title: "Fuzzy Time Series COVID-19"
     };
   },
   data() {
@@ -309,16 +309,23 @@ export default {
     // }
   },
   async created() {
-    await this.getSeries();
-    // await this.predictCovid();
+    // await this.getSeries();
+    await this.getLiveSeries();
+    await this.predictCovid();
   },
   methods: {
     async getLiveSeries() {
+      const url = "https://covid-fts-next.vercel.app/api/daily";
+      this.series = [];
       try {
-        let res = await this.$axios.get(
-          "https://apicovid19indonesia-v2.vercel.app/api/indonesia/harian"
-        );
-        this.series = res.data.slice(-30);
+        let res = await this.$axios.get(url);
+        res.data.slice(-30).map(item => {
+          let date = new Date(Date.parse(item.date_time));
+          let name = `${date.getDate()}/${date.getMonth()}`;
+
+          this.series.push({ name, dirawat_kumulatif: item.active_cumulative });
+        });
+        console.log(this.series);
       } catch (e) {
         console.log(e);
       }
@@ -581,7 +588,8 @@ export default {
           yAxes: [
             {
               ticks: {
-                beginAtZero: true
+                beginAtZero: true,
+                min: 80000
               }
             }
           ]
