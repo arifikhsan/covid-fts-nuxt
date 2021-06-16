@@ -1,10 +1,10 @@
 <template>
   <div class="max-w-3xl pt-4 pb-16 mx-auto">
     <div class="p-4 text-center">
-      <h1 class="text-3xl font-bold text-indigo-600">
+      <h1 class="text-4xl font-bold leading-tight text-indigo-600">
         Peramalan Kasus Aktif Covid-19 di Indonesia
       </h1>
-      <p class="mt-2 text-sm italic text-indigo-400">
+      <p class="mt-2 italic font-medium text-indigo-400">
         Metode Fuzzy Time Series Model Chen
       </p>
     </div>
@@ -13,8 +13,8 @@
       <button @click="getLiveSeries">Live</button>
     </div> -->
     <client-only>
-      <div v-if="state.loading">
-        Loading data...
+      <div v-if="state.loading" class="flex items-center justify-center">
+        <p>Loading...</p>
       </div>
       <div v-else-if="state.dataObtained">
         <div class="mt-6 text-center">
@@ -321,7 +321,7 @@ export default {
   async created() {
     // await this.getSeries();
     await this.getLiveSeries();
-    // await this.predictCovid();
+    await this.predictCovid();
   },
   methods: {
     async getLiveSeries() {
@@ -332,7 +332,8 @@ export default {
       try {
         let res = await this.$axios.get(url);
         console.log(res)
-        res.data.slice(-30).map(item => {
+        // res.data.slice(-30).map(item => {
+        res.data.cases.map(item => {
           let date = new Date(Date.parse(item.date_time));
           let name = `${date.getDate()}/${date.getMonth()}`;
 
@@ -604,8 +605,8 @@ export default {
           yAxes: [
             {
               ticks: {
-                beginAtZero: true,
-                min: 80000
+                // beginAtZero: true,
+                // min: 80000
               }
             }
           ]
