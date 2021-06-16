@@ -4,264 +4,269 @@
       <h1 class="text-3xl font-bold text-indigo-600">
         Peramalan Kasus Aktif Covid-19 di Indonesia
       </h1>
+      <p class="mt-2 text-sm italic text-indigo-400">
+        Metode Fuzzy Time Series Model Chen
+      </p>
     </div>
     <!-- <div class="mt-6 text-center">
       <button>Januari 2021</button>
       <button @click="getLiveSeries">Live</button>
     </div> -->
-    <client-only v-if="done">
-      <div class="mt-6 text-center">
-        <h2 class="text-2xl font-bold text-indigo-500">Bulan Januari 2021</h2>
-        <p class="text-sm italic text-indigo-400">
-          Metode Fuzzy Time Series Model Chen
-        </p>
-        <line-chart
-          class="mt-4"
-          :chart-data="chartdata"
-          :options="options"
-        ></line-chart>
+    <client-only>
+      <div v-if="state.loading">
+        Loading data...
       </div>
-      <div class="px-4 mt-6 text-center">
-        <h2 class="text-2xl font-bold text-indigo-500">Data 2021</h2>
-        <table
-          class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
-        >
-          <thead>
-            <tr class="bg-indigo-200">
-              <td class="border border-indigo-600">Tanggal</td>
-              <td class="border border-indigo-600">Kasus Aktif</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(seri, i) in series" :key="i">
-              <template v-if="i !== series.length - 1">
+      <div v-else-if="state.dataObtained">
+        <div class="mt-6 text-center">
+          <h2 class="text-2xl font-bold text-indigo-500">Bulan Januari 2021</h2>
+          <line-chart
+            class="mt-4"
+            :chart-data="chartdata"
+            :options="options"
+          ></line-chart>
+        </div>
+        <div class="px-4 mt-6 text-center">
+          <h2 class="text-2xl font-bold text-indigo-500">Data 2021</h2>
+          <table
+            class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
+          >
+            <thead>
+              <tr class="bg-indigo-200">
+                <td class="border border-indigo-600">Tanggal</td>
+                <td class="border border-indigo-600">Kasus Aktif</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(seri, i) in series" :key="i">
+                <template v-if="i !== series.length - 1">
+                  <td class="border border-indigo-600">{{ seri.name }}</td>
+                  <td class="border border-indigo-600">
+                    {{ seri.dirawat_kumulatif }}
+                  </td>
+                </template>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="px-4 mt-6 text-center">
+          <h2 class="text-3xl font-bold text-indigo-500">Perhitungan</h2>
+        </div>
+        <div class="px-4 mt-6 text-center">
+          <h2 class="text-2xl font-bold text-indigo-500">Himpunan Semesta</h2>
+          <table
+            class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
+          >
+            <thead>
+              <tr class="bg-indigo-200">
+                <td class="border border-indigo-600">Nama</td>
+                <td class="border border-indigo-600">Nilai</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="border border-indigo-600">Min</td>
+                <td class="border border-indigo-600">{{ dMin }}</td>
+              </tr>
+              <tr>
+                <td class="border border-indigo-600">Max</td>
+                <td class="border border-indigo-600">{{ dMax }}</td>
+              </tr>
+              <tr>
+                <td class="border border-indigo-600">Jumlah Interval</td>
+                <td class="border border-indigo-600">{{ intervalCount }}</td>
+              </tr>
+              <tr>
+                <td class="border border-indigo-600">Lebar Interval</td>
+                <td class="border border-indigo-600">
+                  {{ twoDigit(intervalLength) }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="px-4 mt-6 text-center">
+          <h2 class="text-2xl font-bold text-indigo-500">Interval</h2>
+          <table
+            class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
+          >
+            <thead>
+              <tr class="bg-indigo-200">
+                <td class="border border-indigo-600">U</td>
+                <td class="border border-indigo-600">Dari</td>
+                <td class="border border-indigo-600">Sampai</td>
+                <td class="border border-indigo-600">A</td>
+                <td class="border border-indigo-600">Median</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(interval, i) in intervals" :key="i">
+                <td class="border border-indigo-600">{{ `U${i + 1}` }}</td>
+                <td class="border border-indigo-600">
+                  {{ twoDigit(interval.low) }}
+                </td>
+                <td class="border border-indigo-600">
+                  {{ twoDigit(interval.high) }}
+                </td>
+                <td class="border border-indigo-600">
+                  {{ twoDigit(interval.a) }}
+                </td>
+                <td class="border border-indigo-600">
+                  {{ twoDigit(interval.median) }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="px-4 mt-6 text-center">
+          <h2 class="text-2xl font-bold text-indigo-500">
+            Fuzzy Logic Relation
+          </h2>
+          <table
+            class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
+          >
+            <thead>
+              <tr class="bg-indigo-200">
+                <td class="border border-indigo-600">Periode</td>
+                <td class="border border-indigo-600">Value</td>
+                <td class="border border-indigo-600">Fuzzyfication</td>
+                <td class="border border-indigo-600">Relation</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(seri, i) in series" :key="i">
+                <template v-if="i !== series.length - 1">
+                  <td class="border border-indigo-600">
+                    {{ seri.name }}
+                  </td>
+                  <td class="border border-indigo-600">
+                    {{ seri.dirawat_kumulatif }}
+                  </td>
+                  <td class="border border-indigo-600">
+                    {{ seri.fuzzifikasi }}
+                  </td>
+                  <td v-if="i !== 0" class="border border-indigo-600">
+                    {{ seri.relasi }}
+                  </td>
+                  <td v-else></td>
+                </template>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="px-4 mt-6 text-center">
+          <h2 class="text-2xl font-bold text-indigo-500">
+            Fuzzy Logic Relation Grup
+          </h2>
+          <table
+            class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
+          >
+            <thead>
+              <tr class="bg-indigo-200">
+                <td class="border border-indigo-600">Group</td>
+                <td class="border border-indigo-600">Relationship</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(group, i) in groups" :key="i">
+                <td class="border border-indigo-600">{{ group.groupName }}</td>
+                <td class="border border-indigo-600">
+                  {{ group.groupRelation }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="px-4 mt-6 text-center">
+          <h2 class="text-2xl font-bold text-indigo-500">Prediksi</h2>
+          <table
+            class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
+          >
+            <thead>
+              <tr class="bg-indigo-200">
+                <td class="border border-indigo-600">Current State</td>
+                <td class="border border-indigo-600">Next State</td>
+                <td class="border border-indigo-600">Perhitungan</td>
+                <td class="border border-indigo-600">Nilai Prediksi</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(forecast, i) in forecasts" :key="i">
+                <td class="border border-indigo-600">
+                  {{ forecast.currentState }}
+                </td>
+                <td class="border border-indigo-600">
+                  {{ forecast.nextStates }}
+                </td>
+                <td class="border border-indigo-600">{{ forecast.formula }}</td>
+                <td class="border border-indigo-600">
+                  {{ twoDigit(forecast.forecast) }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="px-4 mt-6 text-center">
+          <h2 class="text-2xl font-bold text-indigo-500">Hasil Prediksi</h2>
+          <table
+            class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
+          >
+            <thead>
+              <tr class="bg-indigo-200">
+                <td class="border border-indigo-600">Tanggal</td>
+                <td class="border border-indigo-600">Kasus Aktif</td>
+                <td class="border border-indigo-600">Fuzzifikasi</td>
+                <td class="border border-indigo-600">Prediksi</td>
+                <td class="border border-indigo-600">MAPE</td>
+                <td class="border border-indigo-600">Persentase</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(seri, i) in series" :key="i">
                 <td class="border border-indigo-600">{{ seri.name }}</td>
-                <td class="border border-indigo-600">
-                  {{ seri.dirawat_kumulatif }}
-                </td>
-              </template>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="px-4 mt-6 text-center">
-        <h2 class="text-3xl font-bold text-indigo-500">Perhitungan</h2>
-      </div>
-      <div class="px-4 mt-6 text-center">
-        <h2 class="text-2xl font-bold text-indigo-500">Himpunan Semesta</h2>
-        <table
-          class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
-        >
-          <thead>
-            <tr class="bg-indigo-200">
-              <td class="border border-indigo-600">Nama</td>
-              <td class="border border-indigo-600">Nilai</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="border border-indigo-600">Min</td>
-              <td class="border border-indigo-600">{{ dMin }}</td>
-            </tr>
-            <tr>
-              <td class="border border-indigo-600">Max</td>
-              <td class="border border-indigo-600">{{ dMax }}</td>
-            </tr>
-            <tr>
-              <td class="border border-indigo-600">Jumlah Interval</td>
-              <td class="border border-indigo-600">{{ intervalCount }}</td>
-            </tr>
-            <tr>
-              <td class="border border-indigo-600">Lebar Interval</td>
-              <td class="border border-indigo-600">
-                {{ twoDigit(intervalLength) }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="px-4 mt-6 text-center">
-        <h2 class="text-2xl font-bold text-indigo-500">Interval</h2>
-        <table
-          class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
-        >
-          <thead>
-            <tr class="bg-indigo-200">
-              <td class="border border-indigo-600">U</td>
-              <td class="border border-indigo-600">Dari</td>
-              <td class="border border-indigo-600">Sampai</td>
-              <td class="border border-indigo-600">A</td>
-              <td class="border border-indigo-600">Median</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(interval, i) in intervals" :key="i">
-              <td class="border border-indigo-600">{{ `U${i + 1}` }}</td>
-              <td class="border border-indigo-600">
-                {{ twoDigit(interval.low) }}
-              </td>
-              <td class="border border-indigo-600">
-                {{ twoDigit(interval.high) }}
-              </td>
-              <td class="border border-indigo-600">
-                {{ twoDigit(interval.a) }}
-              </td>
-              <td class="border border-indigo-600">
-                {{ twoDigit(interval.median) }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="px-4 mt-6 text-center">
-        <h2 class="text-2xl font-bold text-indigo-500">
-          Fuzzy Logic Relation
-        </h2>
-        <table
-          class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
-        >
-          <thead>
-            <tr class="bg-indigo-200">
-              <td class="border border-indigo-600">Periode</td>
-              <td class="border border-indigo-600">Value</td>
-              <td class="border border-indigo-600">Fuzzyfication</td>
-              <td class="border border-indigo-600">Relation</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(seri, i) in series" :key="i">
-              <template v-if="i !== series.length - 1">
-                <td class="border border-indigo-600">
-                  {{ seri.name }}
-                </td>
                 <td class="border border-indigo-600">
                   {{ seri.dirawat_kumulatif }}
                 </td>
                 <td class="border border-indigo-600">
                   {{ seri.fuzzifikasi }}
                 </td>
-                <td v-if="i !== 0" class="border border-indigo-600">
-                  {{ seri.relasi }}
-                </td>
-                <td v-else></td>
-              </template>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="px-4 mt-6 text-center">
-        <h2 class="text-2xl font-bold text-indigo-500">
-          Fuzzy Logic Relation Grup
-        </h2>
-        <table
-          class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
-        >
-          <thead>
-            <tr class="bg-indigo-200">
-              <td class="border border-indigo-600">Group</td>
-              <td class="border border-indigo-600">Relationship</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(group, i) in groups" :key="i">
-              <td class="border border-indigo-600">{{ group.groupName }}</td>
-              <td class="border border-indigo-600">
-                {{ group.groupRelation }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="px-4 mt-6 text-center">
-        <h2 class="text-2xl font-bold text-indigo-500">Prediksi</h2>
-        <table
-          class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
-        >
-          <thead>
-            <tr class="bg-indigo-200">
-              <td class="border border-indigo-600">Current State</td>
-              <td class="border border-indigo-600">Next State</td>
-              <td class="border border-indigo-600">Perhitungan</td>
-              <td class="border border-indigo-600">Nilai Prediksi</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(forecast, i) in forecasts" :key="i">
-              <td class="border border-indigo-600">
-                {{ forecast.currentState }}
-              </td>
-              <td class="border border-indigo-600">
-                {{ forecast.nextStates }}
-              </td>
-              <td class="border border-indigo-600">{{ forecast.formula }}</td>
-              <td class="border border-indigo-600">
-                {{ twoDigit(forecast.forecast) }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="px-4 mt-6 text-center">
-        <h2 class="text-2xl font-bold text-indigo-500">Hasil Prediksi</h2>
-        <table
-          class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
-        >
-          <thead>
-            <tr class="bg-indigo-200">
-              <td class="border border-indigo-600">Tanggal</td>
-              <td class="border border-indigo-600">Kasus Aktif</td>
-              <td class="border border-indigo-600">Fuzzifikasi</td>
-              <td class="border border-indigo-600">Prediksi</td>
-              <td class="border border-indigo-600">MAPE</td>
-              <td class="border border-indigo-600">Persentase</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(seri, i) in series" :key="i">
-              <td class="border border-indigo-600">{{ seri.name }}</td>
-              <td class="border border-indigo-600">
-                {{ seri.dirawat_kumulatif }}
-              </td>
-              <td class="border border-indigo-600">
-                {{ seri.fuzzifikasi }}
-              </td>
-              <td class="border border-indigo-600">
-                {{ seri.forecast ? twoDigit(seri.forecast) : "" }}
-              </td>
-              <template v-if="i !== series.length - 1">
                 <td class="border border-indigo-600">
-                  {{ threeDigit(seri.mape) }}
+                  {{ seri.forecast ? twoDigit(seri.forecast) : "" }}
+                </td>
+                <template v-if="i !== series.length - 1">
+                  <td class="border border-indigo-600">
+                    {{ threeDigit(seri.mape) }}
+                  </td>
+                  <td class="border border-indigo-600">
+                    {{ threeDigit(seri.percentage) }} %
+                  </td>
+                </template>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="px-4 mt-6 text-center">
+          <h2 class="text-2xl font-bold text-indigo-500">Hasil</h2>
+          <table
+            class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
+          >
+            <thead>
+              <tr class="bg-indigo-200">
+                <td class="border border-indigo-600">MAPE</td>
+                <td class="border border-indigo-600">Prosentase</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="border border-indigo-600">
+                  {{ threeDigit(finalMape) }}
                 </td>
                 <td class="border border-indigo-600">
-                  {{ threeDigit(seri.percentage) }} %
+                  {{ threeDigit(finalMape * 100) }} %
                 </td>
-              </template>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="px-4 mt-6 text-center">
-        <h2 class="text-2xl font-bold text-indigo-500">Hasil</h2>
-        <table
-          class="w-full mt-4 border border-collapse border-indigo-800 table-auto"
-        >
-          <thead>
-            <tr class="bg-indigo-200">
-              <td class="border border-indigo-600">MAPE</td>
-              <td class="border border-indigo-600">Prosentase</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="border border-indigo-600">
-                {{ threeDigit(finalMape) }}
-              </td>
-              <td class="border border-indigo-600">
-                {{ threeDigit(finalMape * 100) }} %
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </client-only>
   </div>
@@ -282,6 +287,11 @@ export default {
   },
   data() {
     return {
+      state: {
+        loading: false,
+        dataObtained: false,
+        dataPredicted: false
+      },
       done: false,
       chartdata: null,
       series: null,
@@ -311,23 +321,29 @@ export default {
   async created() {
     // await this.getSeries();
     await this.getLiveSeries();
-    await this.predictCovid();
+    // await this.predictCovid();
   },
   methods: {
     async getLiveSeries() {
-      const url = "https://covid-fts-next.vercel.app/api/daily";
+      this.state.loading = true;
+      // await this.$axios.get('https://data.covid19.go.id/public/api/update.json')
+      const url = "https://covid-fts-rails.herokuapp.com/cases";
       this.series = [];
       try {
         let res = await this.$axios.get(url);
+        console.log(res)
         res.data.slice(-30).map(item => {
           let date = new Date(Date.parse(item.date_time));
           let name = `${date.getDate()}/${date.getMonth()}`;
 
           this.series.push({ name, dirawat_kumulatif: item.active_cumulative });
         });
+        this.state.dataObtained = true;
         console.log(this.series);
       } catch (e) {
         console.log(e);
+      } finally {
+        this.state.loading = false;
       }
     },
     async getSeries() {
