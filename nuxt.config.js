@@ -50,6 +50,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    retry: true
   },
   /*
   ** Build configuration

@@ -5,7 +5,7 @@
       <span class="text-sm">Tanggal: {{ now }}</span>
     </div>
     <div class="flex items-center justify-center h-64 border border-indigo-400">
-      <!-- <p>Loading...</p> -->
+      <p v-if="state.loading">Loading...</p>
       <!-- <p>{{ counter }}</p>
       <button @click="incrementCounter">increment</button> -->
     </div>
@@ -52,7 +52,7 @@ export default {
   },
   async created() {
     // await this.getSeries();
-    // await this.getLiveSeries();
+    await this.getLiveSeries();
     // await this.predictCovid();
   },
   methods: {
