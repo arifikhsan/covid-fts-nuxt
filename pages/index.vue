@@ -10,6 +10,8 @@
     </div>
     <prediction />
     <explanation />
+    <about />
+
     <!-- <client-only>
       <div v-if="state.loading" class="flex items-center justify-center">
         <p>Loading...</p>
@@ -274,11 +276,13 @@
 
 import Prediction from "~/components/prediction.vue";
 import Explanation from "~/components/explanation.vue";
+import About from "~/components/about.vue";
 
 export default {
   components: {
     prediction: Prediction,
-    explanation: Explanation
+    explanation: Explanation,
+    about: About,
   },
   head() {
     return {
