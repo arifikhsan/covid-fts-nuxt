@@ -4,8 +4,14 @@
       <h2 class="text-xl font-semibold text-indigo-600">Grafik Prediksi</h2>
       <span class="text-sm">Tanggal: {{ now }}</span>
     </div>
-    <div class="flex items-center justify-center h-64 border border-indigo-400">
+    <div
+      style="min-height: 16rem"
+      class="flex items-center justify-center border border-indigo-400"
+    >
       <p v-if="state.loading">Loading...</p>
+      <div v-if="done" class="">
+        <line-chart :chart-data="chartdata" :options="options"></line-chart>
+      </div>
       <!-- <p>{{ counter }}</p>
       <button @click="incrementCounter">increment</button> -->
     </div>
@@ -53,7 +59,7 @@ export default {
   async created() {
     // await this.getSeries();
     await this.getLiveSeries();
-    // await this.predictCovid();
+    await this.predictCovid();
   },
   methods: {
     async getLiveSeries() {
