@@ -34,6 +34,7 @@ export default {
   buildModules: [
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/google-fonts',
   ],
   /*
   ** Nuxt.js modules
@@ -62,5 +63,18 @@ export default {
   },
   server: {
     port: 8000 // default: 3000
+  },
+  googleFonts: {
+    // display: 'swap', // 'auto' | 'block' | 'swap' | 'fallback' | 'optional'
+    families: {
+      Inter: true,
+      // Roboto: true,
+      // 'Josefin+Sans': true,
+      // Lato: [100, 300],
+      // Raleway: {
+      //   wght: [100, 400],
+      //   ital: [100]
+      // },
+    }
   }
 }

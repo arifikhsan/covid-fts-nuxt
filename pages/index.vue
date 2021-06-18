@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-3xl pt-4 pb-16 mx-auto">
     <div class="p-4 text-center">
-      <h1 class="text-4xl font-bold leading-tight text-indigo-600">
+      <h1 class="text-4xl font-black leading-tight text-indigo-600 font-body">
         Peramalan Kasus Aktif Covid-19 di Indonesia
       </h1>
       <p class="mt-2 italic font-medium text-indigo-400">
@@ -13,6 +13,7 @@
       <button @click="getLiveSeries">Live</button>
     </div> -->
     <client-only>
+
       <div v-if="state.loading" class="flex items-center justify-center">
         <p>Loading...</p>
       </div>
@@ -320,8 +321,8 @@ export default {
   },
   async created() {
     // await this.getSeries();
-    await this.getLiveSeries();
-    await this.predictCovid();
+    // await this.getLiveSeries();
+    // await this.predictCovid();
   },
   methods: {
     async getLiveSeries() {
@@ -331,7 +332,7 @@ export default {
       this.series = [];
       try {
         let res = await this.$axios.get(url);
-        console.log(res)
+        // console.log(res)
         // res.data.slice(-30).map(item => {
         res.data.cases.map(item => {
           let date = new Date(Date.parse(item.date_time));
@@ -340,9 +341,9 @@ export default {
           this.series.push({ name, dirawat_kumulatif: item.active_cumulative });
         });
         this.state.dataObtained = true;
-        console.log(this.series);
+        // console.log(this.series);
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       } finally {
         this.state.loading = false;
       }
@@ -397,10 +398,10 @@ export default {
       let intervalCount = Math.round(1 + 3.322 * Math.log10(n));
       let intervalLength = (dMax - dMin) / intervalCount;
 
-      console.log("dMin", dMin);
-      console.log("dMax", dMax);
-      console.log("intervalCount", intervalCount);
-      console.log("intervalLength", intervalLength);
+      // console.log("dMin", dMin);
+      // console.log("dMax", dMax);
+      // console.log("intervalCount", intervalCount);
+      // console.log("intervalLength", intervalLength);
 
       this.dMin = dMin;
       this.dMax = dMax;
@@ -418,7 +419,7 @@ export default {
         intervals.push({ low, high, median, a });
       }
 
-      console.log("intervals");
+      // console.log("intervals");
       // console.table(intervals);
 
       this.intervals = intervals;
@@ -446,8 +447,8 @@ export default {
         }
       });
 
-      console.log("series");
-      console.table(this.series);
+      // console.log("series");
+      // console.table(this.series);
 
       // FRG
       const groups = [];
@@ -475,8 +476,8 @@ export default {
         groups.push({ groupName, groupRelation });
       }
 
-      console.log("groups");
-      console.table(groups);
+      // console.log("groups");
+      // console.table(groups);
 
       this.groups = groups;
 
@@ -515,8 +516,8 @@ export default {
         forecasts.push({ currentState, nextStates, formula, forecast });
       }
 
-      console.log("forecasts");
-      console.table(forecasts);
+      // console.log("forecasts");
+      // console.table(forecasts);
 
       this.forecasts = forecasts;
 
@@ -546,8 +547,8 @@ export default {
         }
       }
 
-      console.log("this.series");
-      console.table(this.series);
+      // console.log("this.series");
+      // console.table(this.series);
 
       // MAPE
       for (let i = 0; i < this.series.length; i++) {
@@ -572,9 +573,9 @@ export default {
       let mapes = map(this.series, "mape");
       mapes.shift();
       mapes.pop();
-      console.log(mapes);
+      // console.log(mapes);
       this.finalMape = mapes.reduce((a, b) => a + b) / mapes.length;
-      console.log(this.finalMape);
+      // console.log(this.finalMape);
 
       // chart
 

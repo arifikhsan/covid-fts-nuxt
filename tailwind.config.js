@@ -5,7 +5,12 @@
  ** Default: https://github.com/tailwindcss/tailwindcss/blob/master/stubs/defaultConfig.stub.js
  */
 module.exports = {
-  theme: {},
+  theme: {
+    fontFamily: {
+      'display': 'Inter',
+      'body': 'Inter',
+    }
+  },
   variants: {},
   plugins: [require("@tailwindcss/typography")]
 };
