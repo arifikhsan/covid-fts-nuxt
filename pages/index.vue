@@ -1,19 +1,16 @@
 <template>
   <div class="max-w-3xl pt-4 pb-16 mx-auto">
-    <div class="p-4 text-center">
-      <h1 class="text-4xl font-black leading-tight text-indigo-600 font-body">
-        Peramalan Kasus Aktif Covid-19 di Indonesia
+    <div class="p-4">
+      <h1 class="text-4xl font-bold leading-tight text-indigo-600">
+        Peramalan Kasus Aktif COVID-19 di Indonesia
       </h1>
-      <p class="mt-2 italic font-medium text-indigo-400">
+      <p class="mt-3 text-indigo-500">
         Metode Fuzzy Time Series Model Chen
       </p>
     </div>
-    <!-- <div class="mt-6 text-center">
-      <button>Januari 2021</button>
-      <button @click="getLiveSeries">Live</button>
-    </div> -->
+    <prediction />
+    <explanation />
     <client-only>
-
       <div v-if="state.loading" class="flex items-center justify-center">
         <p>Loading...</p>
       </div>
@@ -276,10 +273,14 @@
 <script>
 import LineChart from "@/components/line-chart";
 import { map, min, max, uniq } from "lodash";
+import Prediction from "~/components/prediction.vue";
+import Explanation from "~/components/explanation.vue";
 
 export default {
   components: {
-    "line-chart": LineChart
+    "line-chart": LineChart,
+    prediction: Prediction,
+    explanation: Explanation
   },
   head() {
     return {
