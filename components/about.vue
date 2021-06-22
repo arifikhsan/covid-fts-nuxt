@@ -7,7 +7,7 @@
     <div class="flex flex-col p-4 space-y-2">
       <div>
         <h3 class="text-lg font-semibold text-indigo-500">Repository</h3>
-        <ol>
+        <ol class="ml-5 list-disc">
           <li v-for="link in links" :key="link.name">
             <a
               :href="link.address"
