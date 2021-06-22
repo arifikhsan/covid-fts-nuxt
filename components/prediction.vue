@@ -9,7 +9,7 @@
       class="flex items-center justify-center border border-indigo-400"
     >
       <p v-if="state.loading">Loading...</p>
-      <div v-if="done" class="">
+      <div v-if="done" class="overflow-auto">
         <line-chart :chart-data="chartdata" :options="options"></line-chart>
       </div>
       <!-- <p>{{ counter }}</p>
@@ -57,7 +57,6 @@ export default {
     };
   },
   async created() {
-    // await this.getSeries();
     await this.getLiveSeries();
     await this.predictCovid();
   },
@@ -70,12 +69,11 @@ export default {
       try {
         let res = await this.$axios.get(url);
         // console.log(res)
-        // res.data.slice(-30).map(item => {
-        res.data.cases.map(item => {
+        res.data.cases.slice(-30).reverse().map(item => {
           let date = new Date(Date.parse(item.date_time));
-          let name = `${date.getDate()}/${date.getMonth()}`;
+          let label = `${date.getDate()}/${date.getMonth() + 1}`;
 
-          this.series.push({ name, dirawat_kumulatif: item.active_cumulative });
+          this.series.push({ label, ...item });
         });
         this.state.dataObtained = true;
         // console.log(this.series);
@@ -85,48 +83,8 @@ export default {
         this.state.loading = false;
       }
     },
-    async getSeries() {
-      this.series = [
-        { name: "1-Jan", dirawat_kumulatif: 111005 },
-        { name: "2-Jan", dirawat_kumulatif: 110400 },
-        { name: "3-Jan", dirawat_kumulatif: 110679 },
-        { name: "4-Jan", dirawat_kumulatif: 110089 },
-        { name: "5-Jan", dirawat_kumulatif: 110693 },
-        { name: "6-Jan", dirawat_kumulatif: 112593 },
-        { name: "7-Jan", dirawat_kumulatif: 114766 },
-        { name: "8-Jan", dirawat_kumulatif: 117704 },
-        { name: "9-Jan", dirawat_kumulatif: 120928 },
-        { name: "10-Jan", dirawat_kumulatif: 122873 },
-        { name: "11-Jan", dirawat_kumulatif: 123636 },
-        { name: "12-Jan", dirawat_kumulatif: 126313 },
-        { name: "13-Jan", dirawat_kumulatif: 129628 },
-        { name: "14-Jan", dirawat_kumulatif: 133149 },
-        { name: "15-Jan", dirawat_kumulatif: 138238 },
-        { name: "16-Jan", dirawat_kumulatif: 143517 },
-        { name: "17-Jan", dirawat_kumulatif: 145482 },
-        { name: "18-Jan", dirawat_kumulatif: 144798 },
-        { name: "19-Jan", dirawat_kumulatif: 146842 },
-        { name: "20-Jan", dirawat_kumulatif: 149388 },
-        { name: "21-Jan", dirawat_kumulatif: 151658 },
-        { name: "22-Jan", dirawat_kumulatif: 156683 },
-        { name: "23-Jan", dirawat_kumulatif: 158751 },
-        { name: "24-Jan", dirawat_kumulatif: 162617 },
-        { name: "25-Jan", dirawat_kumulatif: 161636 },
-        { name: "26-Jan", dirawat_kumulatif: 163526 },
-        { name: "27-Jan", dirawat_kumulatif: 164113 },
-        { name: "28-Jan", dirawat_kumulatif: 166540 },
-        { name: "29-Jan", dirawat_kumulatif: 170017 },
-        { name: "30-Jan", dirawat_kumulatif: 174083 },
-        { name: "31-Jan", dirawat_kumulatif: 175095 },
-        { name: "1-Feb", dirawat_kumulatif: 175349 },
-        { name: "2-Feb", dirawat_kumulatif: 172576 },
-        { name: "3-Feb", dirawat_kumulatif: 175236 },
-        { name: "4-Feb", dirawat_kumulatif: 174798 },
-        { name: "5-Feb", dirawat_kumulatif: 176672 }
-      ];
-    },
     async predictCovid() {
-      let values = map(this.series, "dirawat_kumulatif");
+      let values = map(this.series, "active_cumulative");
 
       // himpunan semesta
       let dMin = min(values);
@@ -168,8 +126,8 @@ export default {
           const interval = intervals[i];
 
           if (
-            seri.dirawat_kumulatif >= interval.low &&
-            seri.dirawat_kumulatif <= interval.high
+            seri.active_cumulative >= interval.low &&
+            seri.active_cumulative <= interval.high
           ) {
             seri.fuzzifikasi = interval.a;
             break;
@@ -277,8 +235,13 @@ export default {
 
         const lastSeries = this.series[this.series.length - 1];
         if (lastSeries.fuzzifikasi === forecast.currentState) {
+
+          let lastDate = new Date(Date.parse(this.series[this.series.length - 1].date_time));
+          lastDate.setDate(lastDate.getDate() + 1);
+          let label = `${lastDate.getDate()}/${lastDate.getMonth() + 1}`;
+
           this.series.push({
-            name: "besoknya",
+            label,
             forecast: forecast.forecast
           });
         }
@@ -293,8 +256,8 @@ export default {
 
         if (i !== 0) {
           const mape =
-            Math.abs(seri.dirawat_kumulatif - seri.forecast) /
-            seri.dirawat_kumulatif;
+            Math.abs(seri.active_cumulative - seri.forecast) /
+            seri.active_cumulative;
           seri.mape = mape;
 
           // percentage %
@@ -316,8 +279,8 @@ export default {
 
       // chart
 
-      const date = map(this.series, "name");
-      const actual = map(this.series, "dirawat_kumulatif");
+      const date = map(this.series, "label");
+      const actual = map(this.series, "active_cumulative");
       const forecast = map(this.series, "forecast");
 
       this.chartdata = {
@@ -352,45 +315,6 @@ export default {
       };
 
       this.done = true;
-
-      // let intervalValues = dMin
-      // let middleValues = null
-      // times(intervalCount, () => {
-
-      // })
-
-      //   try {
-      //     this.covid = await this.$axios.post(
-      //       "https://django-fts.herokuapp.com/fts/predict",
-      //       {
-      //         train,
-      //         test: [...train],
-      //         mode: "chen"
-      //       }
-      //     );
-
-      //     let date = range(1, 31);
-
-      //     this.chartdata = {
-      //       labels: date,
-      //       datasets: [
-      //         {
-      //           label: "Kasus Positif",
-      //           data: this.covid.data.train,
-      //           backgroundColor: "transparent",
-      //           borderColor: "#FF6384"
-      //         },
-      //         {
-      //           label: "Prediksi",
-      //           data: this.covid.data.forecast,
-      //           backgroundColor: "transparent",
-      //           borderColor: "#36A2EB"
-      //         }
-      //       ]
-      //     };
-      //   } catch (error) {
-      //     console.log(error);
-      //   }
     },
     twoDigit(number) {
       try {
