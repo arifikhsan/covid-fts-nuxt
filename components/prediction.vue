@@ -59,6 +59,7 @@ export default {
   async created() {
     await this.getLiveSeries();
     await this.predictCovid();
+    this.updateVuex();
   },
   methods: {
     async getLiveSeries() {
@@ -69,12 +70,15 @@ export default {
       try {
         let res = await this.$axios.get(url);
         // console.log(res)
-        res.data.cases.slice(-30).reverse().map(item => {
-          let date = new Date(Date.parse(item.date_time));
-          let label = `${date.getDate()}/${date.getMonth() + 1}`;
+        res.data.cases
+          .slice(-30)
+          .reverse()
+          .map(item => {
+            let date = new Date(Date.parse(item.date_time));
+            let label = `${date.getDate()}/${date.getMonth() + 1}`;
 
-          this.series.push({ label, ...item });
-        });
+            this.series.push({ label, ...item });
+          });
         this.state.dataObtained = true;
         // console.log(this.series);
       } catch (e) {
@@ -235,8 +239,9 @@ export default {
 
         let lastSeries = this.series[this.series.length - 1];
         if (lastSeries.fuzzifikasi === forecast.currentState) {
-
-          let lastDate = new Date(Date.parse(this.series[this.series.length - 1].date_time));
+          let lastDate = new Date(
+            Date.parse(this.series[this.series.length - 1].date_time)
+          );
           lastDate.setDate(lastDate.getDate() + 1);
           let label = `${lastDate.getDate()}/${lastDate.getMonth() + 1}`;
 
@@ -336,6 +341,17 @@ export default {
     },
     incrementCounter() {
       this.$store.commit("increment");
+    },
+    updateVuex() {
+      this.$store.commit("addSeries", this.series);
+      this.$store.commit("insertDMin", this.dMin);
+      this.$store.commit("insertDMax", this.dMax);
+      this.$store.commit("insertIntervalCount", this.intervalCount);
+      this.$store.commit("insertIntervalLength", this.intervalLength);
+      this.$store.commit("addIntervals", this.intervals);
+      this.$store.commit("addGroups", this.groups);
+      this.$store.commit("addForecasts", this.forecasts);
+      this.$store.commit("insertFinalMape", this.finalMape);
     }
   }
 };
