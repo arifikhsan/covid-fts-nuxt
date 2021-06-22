@@ -64,7 +64,7 @@ export default {
     async getLiveSeries() {
       this.state.loading = true;
       // await this.$axios.get('https://data.covid19.go.id/public/api/update.json')
-      const url = "https://covid-fts-rails.herokuapp.com/cases";
+      let url = "https://covid-fts-rails.herokuapp.com/cases";
       this.series = [];
       try {
         let res = await this.$axios.get(url);
@@ -106,10 +106,10 @@ export default {
       // interval
       let intervals = [];
       for (let i = 0; i < intervalCount; i++) {
-        const low = dMin + intervalLength * i;
-        const high = dMin + intervalLength * (i + 1);
-        const median = (high - low) / 2 + low;
-        const a = `A${i + 1}`;
+        let low = dMin + intervalLength * i;
+        let high = dMin + intervalLength * (i + 1);
+        let median = (high - low) / 2 + low;
+        let a = `A${i + 1}`;
 
         intervals.push({ low, high, median, a });
       }
@@ -123,7 +123,7 @@ export default {
       this.series.map((seri, iSeries) => {
         // fuzzifikasi
         for (let i = 0; i < intervals.length; i++) {
-          const interval = intervals[i];
+          let interval = intervals[i];
 
           if (
             seri.active_cumulative >= interval.low &&
@@ -136,7 +136,7 @@ export default {
 
         // relasi
         if (iSeries !== 0) {
-          const previousSeri = this.series[iSeries - 1];
+          let previousSeri = this.series[iSeries - 1];
 
           seri.relasi = `${previousSeri.fuzzifikasi} → ${seri.fuzzifikasi}`;
         }
@@ -146,20 +146,20 @@ export default {
       // console.table(this.series);
 
       // FRG
-      const groups = [];
+      let groups = [];
 
       for (let iInterval = 0; iInterval < intervals.length; iInterval++) {
-        const interval = intervals[iInterval];
+        let interval = intervals[iInterval];
 
         // FRG
-        const groupName = `Group ${iInterval + 1}`;
+        let groupName = `Group ${iInterval + 1}`;
         let groupRelation = [];
 
         for (let i = 0; i < this.series.length; i++) {
-          const seri = this.series[i];
+          let seri = this.series[i];
 
           if (i !== 0) {
-            const relasi = seri.relasi.split(" ");
+            let relasi = seri.relasi.split(" ");
 
             if (interval.a === relasi[0]) {
               groupRelation.push(seri.relasi);
@@ -177,15 +177,15 @@ export default {
       this.groups = groups;
 
       // forecast
-      const forecasts = [];
+      let forecasts = [];
 
       // todo: loop array interval dan group bareng
       for (let i = 0; i < groups.length; i++) {
-        const group = groups[i];
-        const interval = intervals[i];
+        let group = groups[i];
+        let interval = intervals[i];
 
-        const currentState = interval.a;
-        const nextStates = [];
+        let currentState = interval.a;
+        let nextStates = [];
         group.groupRelation.forEach(relation => {
           let rel = relation.split(" ");
           let lastRelation = rel[rel.length - 1];
@@ -193,21 +193,21 @@ export default {
           nextStates.push(lastRelation);
         });
 
-        const medians = [];
+        let medians = [];
 
         nextStates.forEach(nextState => {
-          const intervalItem = intervals.find(e => e.a == nextState);
+          let intervalItem = intervals.find(e => e.a == nextState);
           medians.push(intervalItem.median);
         });
 
-        const formula = [];
+        let formula = [];
         medians.forEach(median => {
           formula.push(this.twoDigit(median));
         });
 
         formula = `average(${formula})`;
 
-        const forecast = medians.reduce((a, b) => a + b) / medians.length;
+        let forecast = medians.reduce((a, b) => a + b) / medians.length;
         forecasts.push({ currentState, nextStates, formula, forecast });
       }
 
@@ -220,7 +220,7 @@ export default {
       this.series.map((seri, iSeries) => {
         if (iSeries !== 0) {
           for (let i = 0; i < forecasts.length; i++) {
-            const forecast = forecasts[i];
+            let forecast = forecasts[i];
 
             if (seri.fuzzifikasi === forecast.currentState) {
               seri.forecast = forecast.forecast;
@@ -231,9 +231,9 @@ export default {
 
       // predict next day
       for (let i = 0; i < forecasts.length; i++) {
-        const forecast = forecasts[i];
+        let forecast = forecasts[i];
 
-        const lastSeries = this.series[this.series.length - 1];
+        let lastSeries = this.series[this.series.length - 1];
         if (lastSeries.fuzzifikasi === forecast.currentState) {
 
           let lastDate = new Date(Date.parse(this.series[this.series.length - 1].date_time));
@@ -252,10 +252,10 @@ export default {
 
       // MAPE
       for (let i = 0; i < this.series.length; i++) {
-        const seri = this.series[i];
+        let seri = this.series[i];
 
         if (i !== 0) {
-          const mape =
+          let mape =
             Math.abs(seri.active_cumulative - seri.forecast) /
             seri.active_cumulative;
           seri.mape = mape;
@@ -279,9 +279,9 @@ export default {
 
       // chart
 
-      const date = map(this.series, "label");
-      const actual = map(this.series, "active_cumulative");
-      const forecast = map(this.series, "forecast");
+      let date = map(this.series, "label");
+      let actual = map(this.series, "active_cumulative");
+      let forecast = map(this.series, "forecast");
 
       this.chartdata = {
         labels: date,
