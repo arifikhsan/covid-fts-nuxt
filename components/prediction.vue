@@ -247,7 +247,8 @@ export default {
 
           this.series.push({
             label,
-            forecast: forecast.forecast
+            forecast: Math.floor(forecast.forecast),
+            date_time: lastDate.toISOString(),
           });
         }
       }

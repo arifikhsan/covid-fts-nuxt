@@ -12,6 +12,10 @@ export const state = () => ({
   finalMape: 0
 });
 
+export const getters = {
+  getSeries: (state) => state.series
+}
+
 export const mutations = {
   increment(state) {
     state.counter++;
