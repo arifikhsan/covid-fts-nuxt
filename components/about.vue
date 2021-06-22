@@ -1,32 +1,55 @@
 <template>
-  <div class="flex flex-col px-4 space-y-2">
-    <div class="prose xl:prose-xl">
+  <div class="flex flex-col">
+    <div class="p-4">
+      <h2 class="text-xl font-semibold text-indigo-600">Tentang</h2>
+      <span class="text-sm">Fuzzy Time Series COVID-19 model Chen</span>
+    </div>
+    <div class="flex flex-col p-4 space-y-2">
       <div>
-        <h3>Repository</h3>
+        <h3 class="text-lg font-semibold text-indigo-500">Repository</h3>
         <ol>
-          <li>
+          <li v-for="link in links" :key="link.name">
             <a
-              href="https://www.github.com/arifikhsan/covid-fts-nuxt/"
+              :href="link.address"
               target="_blank"
-              >Frontend</a
+              class="inline-flex items-center space-x-1 hover:underline"
             >
-          </li>
-          <li>
-            <a
-              href="https://www.github.com/arifikhsan/covid-fts-rails/"
-              target="_blank"
-              >Backend dengan Database</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://www.github.com/arifikhsan/covid-fts-rails/"
-              target="_blank"
-              >Backend scapper</a
-            >
+              <span>
+                {{ link.name }}
+              </span>
+              <external-link-icon />
+            </a>
           </li>
         </ol>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import ExternalLinkIcon from "@/components/external-link-icon.vue";
+
+export default {
+  data() {
+    return {
+      links: [
+        {
+          name: "Frontend",
+          address: "https://www.github.com/arifikhsan/covid-fts-nuxt/"
+        },
+        {
+          name: "Backend dengan Database",
+          address: "https://www.github.com/arifikhsan/covid-fts-rails/"
+        },
+        {
+          name: "Backend scapper",
+          address: "https://www.github.com/arifikhsan/covid-fts-next/"
+        }
+      ]
+    };
+  },
+  components: {
+    "external-link-icon": ExternalLinkIcon
+  }
+};
+</script>

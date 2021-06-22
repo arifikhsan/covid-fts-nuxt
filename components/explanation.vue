@@ -13,7 +13,7 @@
         </button>
       </div>
     </div>
-    <div class="px-4">
+    <div class="p-4">
       <div v-if="todayCase" class="flex flex-col space-y-2">
         <div>
           <h3 class="text-lg font-semibold text-indigo-500">Periode terakhir</h3>
