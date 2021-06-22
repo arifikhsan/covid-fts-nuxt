@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="p-4">
-      <div v-if="todayCase" class="flex flex-col space-y-2">
+      <div v-if="todayCase" class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-6">
         <div>
           <h3 class="text-lg font-semibold text-indigo-500">Periode terakhir</h3>
           <p>Tanggal: {{ humanizeDate(todayCase.date_time) }}</p>
