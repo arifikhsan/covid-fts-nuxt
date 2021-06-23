@@ -54,9 +54,11 @@
         </svg>
       </button>
     </div>
-    <div v-if="isOpen" class="px-4">
-      <p>apa</p>
-    </div>
+    <transition name="fade">
+      <div v-if="isOpen" class="px-4">
+        <p>apa</p>
+      </div>
+    </transition>
   </div>
 </template>
 
