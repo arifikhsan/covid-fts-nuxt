@@ -8,23 +8,25 @@
       style="min-height: 16rem"
       class="flex items-center justify-center border border-indigo-400"
     >
-      <p v-if="state.loading">Loading...</p>
+      <div v-if="state.loading">
+        <loading />
+      </div>
       <div v-if="done" class="overflow-auto">
         <line-chart :chart-data="chartdata" :options="options"></line-chart>
       </div>
-      <!-- <p>{{ counter }}</p>
-      <button @click="incrementCounter">increment</button> -->
     </div>
   </div>
 </template>
 
 <script>
 import LineChart from "@/components/line-chart";
+import Loading from "@/components/loading";
 import { map, min, max, uniq } from "lodash";
 
 export default {
   components: {
-    "line-chart": LineChart
+    "line-chart": LineChart,
+    loading: Loading,
   },
   computed: {
     now() {
@@ -248,7 +250,7 @@ export default {
           this.series.push({
             label,
             forecast: Math.floor(forecast.forecast),
-            date_time: lastDate.toISOString(),
+            date_time: lastDate.toISOString()
           });
         }
       }
