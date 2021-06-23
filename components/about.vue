@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import ExternalLinkIcon from "@/components/external-link-icon.vue";
+import ExternalLinkIcon from "~/components/icon/external-link-icon.vue";
 
 export default {
   data() {

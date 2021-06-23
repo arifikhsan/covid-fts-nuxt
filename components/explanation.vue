@@ -32,31 +32,36 @@
       </div>
       <div v-else><loading /></div>
     </div>
-    <div class="px-4">
+    <div class="px-4 pt-4">
       <button
         @click="isOpen = !isOpen"
         class="inline-flex items-center px-4 py-2 space-x-2 text-sm text-white transition duration-200 bg-indigo-600 focus:outline-none hover:bg-indigo-700"
       >
         <span>Detail prediksi</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-4 h-4 hover:animate-bounce"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
-          />
-        </svg>
+        <chevron-double-up-icon v-if="isOpen" />
+        <chevron-double-down-icon v-else />
       </button>
     </div>
     <transition name="fade">
       <div v-if="isOpen" class="px-4">
-        <p>apa</p>
+        <p>Tabel Dataset</p>
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Tanggal</th>
+              <th>Kasus Aktif</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in getSeries" :key="item.id">
+              <td>{{ index + 1 }}</td>
+              <td>{{ item.label }}</td>
+              <td>{{ item.active_cumulative }}</td>
+            </tr>
+          </tbody>
+        </table>
+        {{ getSeries }}
       </div>
     </transition>
   </div>
@@ -65,10 +70,14 @@
 <script>
 import { mapGetters } from "vuex";
 import Loading from "@/components/loading";
+import ChevronDoubleDownIcon from '@/components/icon/chevron-double-down-icon.vue'
+import ChevronDoubleUpIcon from '@/components/icon/chevron-double-up-icon.vue'
 
 export default {
   components: {
-    loading: Loading
+    loading: Loading,
+    'chevron-double-down-icon': ChevronDoubleDownIcon,
+    'chevron-double-up-icon': ChevronDoubleUpIcon,
   },
   data() {
     return {
