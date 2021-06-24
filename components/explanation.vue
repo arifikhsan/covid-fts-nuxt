@@ -54,14 +54,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in getSeries" :key="item.id">
+            <tr v-for="(item, index) in series" :key="item.id">
               <td>{{ index + 1 }}</td>
               <td>{{ item.label }}</td>
               <td>{{ item.active_cumulative }}</td>
             </tr>
           </tbody>
         </table>
-        {{ getSeries }}
+        {{ series }}
       </div>
     </transition>
   </div>
@@ -70,14 +70,14 @@
 <script>
 import { mapGetters } from "vuex";
 import Loading from "@/components/loading";
-import ChevronDoubleDownIcon from '@/components/icon/chevron-double-down-icon.vue'
-import ChevronDoubleUpIcon from '@/components/icon/chevron-double-up-icon.vue'
+import ChevronDoubleDownIcon from "@/components/icon/chevron-double-down-icon.vue";
+import ChevronDoubleUpIcon from "@/components/icon/chevron-double-up-icon.vue";
 
 export default {
   components: {
     loading: Loading,
-    'chevron-double-down-icon': ChevronDoubleDownIcon,
-    'chevron-double-up-icon': ChevronDoubleUpIcon,
+    "chevron-double-down-icon": ChevronDoubleDownIcon,
+    "chevron-double-up-icon": ChevronDoubleUpIcon
   },
   data() {
     return {
@@ -85,12 +85,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getSeries"]),
+    ...mapGetters(['series']),
     todayCase() {
-      return this.getSeries[this.getSeries.length - 2];
+      return this.series[this.series.length - 2];
     },
     nextDayCase() {
-      return this.getSeries[this.getSeries.length - 1];
+      return this.series[this.series.length - 1];
     }
   },
   methods: {

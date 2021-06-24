@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-col">
-    <div class="p-4">
+    <!-- <div class="p-4">
       <h2 class="text-xl font-semibold text-indigo-600">Tentang</h2>
       <span class="text-sm">Fuzzy Time Series COVID-19 model Chen</span>
-    </div>
+    </div> -->
     <div class="flex flex-col p-4 space-y-2">
       <div>
         <h3 class="text-lg font-semibold text-indigo-500">Repository</h3>

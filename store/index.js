@@ -13,7 +13,15 @@ export const state = () => ({
 });
 
 export const getters = {
-  getSeries: (state) => state.series
+  series: (state) => state.series,
+  dMin: (state) => state.dMin,
+  dMax: (state) => state.dMax,
+  intervalCount: (state) => state.intervalCount,
+  intervalLength: (state) => state.intervalLength,
+  intervals: (state) => state.intervals,
+  groups: (state) => state.groups,
+  forecasts: (state) => state.forecasts,
+  finalMape: (state) => state.finalMape,
 }
 
 export const mutations = {
