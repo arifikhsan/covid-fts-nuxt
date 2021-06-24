@@ -11,6 +11,10 @@ module.exports = {
       'body': 'Inter',
     }
   },
-  variants: {},
+  variants: {
+    extend: {
+      backgroundColor: ['even', 'odd']
+    }
+  },
   plugins: [require("@tailwindcss/typography")]
 };

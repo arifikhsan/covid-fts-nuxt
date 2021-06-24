@@ -1,10 +1,8 @@
 <template>
   <div class="flex flex-col space-y-2">
-    <div class="flex flex-row justify-between p-4">
-      <div>
-        <h2 class="text-xl font-semibold text-indigo-600">Hasil Prediksi</h2>
-        <span class="text-sm">lorem ipsum</span>
-      </div>
+    <div class="p-4">
+      <h2 class="text-xl font-semibold text-indigo-600">Hasil Prediksi</h2>
+      <span class="text-sm">lorem ipsum</span>
     </div>
     <div class="px-4">
       <div
@@ -43,29 +41,45 @@
       </button>
     </div>
     <transition name="fade">
-      <div v-if="isOpen" class="px-4">
-        <p>Tabel Dataset</p>
-        <table>
+      <div v-if="isOpen" class="px-4 pt-4">
+        <h2 class="text-xl font-semibold text-indigo-600">Detail Prediksi</h2>
+        <p class="mt-4 text-lg font-semibold text-indigo-500">1. Tabel Dataset</p>
+        <table class="w-full mt-2 border border-collapse border-indigo-800 table-auto min-w-max">
           <thead>
-            <tr>
-              <th>No</th>
-              <th>Tanggal</th>
-              <th>Kasus Aktif</th>
+            <tr class="text-indigo-600 bg-indigo-200">
+              <th class="border border-indigo-600">No</th>
+              <th class="border border-indigo-600">Tanggal</th>
+              <th class="border border-indigo-600">Kasus Aktif</th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="(item, index) in series" :key="item.id">
-              <td>{{ index + 1 }}</td>
-              <td>{{ item.label }}</td>
-              <td>{{ item.active_cumulative }}</td>
+          <tbody class="text-center">
+            <tr v-for="(item, index) in series" :key="item.id" class="even:bg-indigo-100">
+              <td class="border border-indigo-600">{{ index + 1 }}</td>
+              <td class="border border-indigo-600">{{ item.label }}</td>
+              <td class="border border-indigo-600">{{ item.active_cumulative }}</td>
             </tr>
           </tbody>
         </table>
-        {{ series }}
+        <p class="mt-4 text-lg font-semibold text-indigo-500">2. Tabel Dataset</p>
+        <p class="mt-4 text-lg font-semibold text-indigo-500">3. Tabel Dataset</p>
+        <p class="mt-4 text-lg font-semibold text-indigo-500">4. Tabel Dataset</p>
+        <p class="mt-4 text-lg font-semibold text-indigo-500">5. Tabel Dataset</p>
+        <p class="mt-4 text-lg font-semibold text-indigo-500">6. Tabel Dataset</p>
       </div>
     </transition>
   </div>
 </template>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
 
 <script>
 import { mapGetters } from "vuex";
@@ -85,7 +99,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['series']),
+    ...mapGetters(["series"]),
     todayCase() {
       return this.series[this.series.length - 2];
     },
