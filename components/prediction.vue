@@ -22,15 +22,16 @@
 import LineChart from "@/components/line-chart";
 import Loading from "@/components/loading";
 import { map, min, max, uniq } from "lodash";
+import { dateOptions } from "@/config/dateOptions";
 
 export default {
   components: {
     "line-chart": LineChart,
-    loading: Loading,
+    loading: Loading
   },
   computed: {
     now() {
-      return new Date().toDateString();
+      return new Date().toLocaleDateString("id-ID", dateOptions);
     },
     counter() {
       return this.$store.state.counter;

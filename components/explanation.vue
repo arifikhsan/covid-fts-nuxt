@@ -86,6 +86,7 @@ import { mapGetters } from "vuex";
 import Loading from "@/components/loading";
 import ChevronDoubleDownIcon from "@/components/icon/chevron-double-down-icon.vue";
 import ChevronDoubleUpIcon from "@/components/icon/chevron-double-up-icon.vue";
+import { dateOptions } from "@/config/dateOptions";
 
 export default {
   components: {
@@ -109,7 +110,7 @@ export default {
   },
   methods: {
     humanizeDate(date) {
-      return new Date(date).toDateString();
+      return new Date(date).toLocaleDateString('id-ID', dateOptions);
     }
   }
 };

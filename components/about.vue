@@ -38,7 +38,7 @@ export default {
           address: "https://www.github.com/arifikhsan/covid-fts-nuxt/"
         },
         {
-          name: "Backend dengan Database",
+          name: "Backend dengan database",
           address: "https://www.github.com/arifikhsan/covid-fts-rails/"
         },
         {
