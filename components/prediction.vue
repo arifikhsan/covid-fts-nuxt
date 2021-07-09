@@ -68,7 +68,7 @@ export default {
     async getLiveSeries() {
       this.state.loading = true;
       // await this.$axios.get('https://data.covid19.go.id/public/api/update.json')
-      let url = "https://covid-fts-rails.herokuapp.com/cases";
+      let url = process.env.BACKEND_URL || "https://covid-fts-rails.herokuapp.com/cases";
       this.series = [];
       try {
         let res = await this.$axios.get(url);
