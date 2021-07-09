@@ -11,9 +11,9 @@
     <div class="px-4">
       <div
         v-if="todayCase"
-        class="flex flex-col space-y-2 md:justify-between md:flex-row md:space-y-0 md:space-x-6"
+        class="flex flex-col space-y-2 lg:flex-col lg:space-x-0 lg:space-y-2 md:justify-between md:flex-row md:space-y-0 md:space-x-6"
       >
-        <div class="md:w-1/2">
+        <div class="md:w-1/2 lg:w-full">
           <h3 class="text-lg font-semibold text-indigo-500">
             Periode terakhir
           </h3>
@@ -22,7 +22,7 @@
             <p>Kasus Aktif: {{ todayCase.active_cumulative }}</p>
           </div>
         </div>
-        <div class="md:w-1/2">
+        <div class="md:w-1/2 lg:w-full">
           <h3 class="text-lg font-semibold text-indigo-500">
             Periode selanjutnya
           </h3>
