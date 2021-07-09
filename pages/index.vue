@@ -1,10 +1,10 @@
 <template>
-  <div class="max-w-3xl pt-4 pb-16 mx-auto">
+  <div class="pt-4 pb-16 mx-auto md:max-w-xl lg:max-w-2xl">
     <div class="p-4">
-      <h1 class="text-4xl font-bold leading-tight text-indigo-600">
+      <h1 class="text-4xl font-bold leading-tight text-indigo-600 md:text-center">
         Peramalan Kasus Aktif COVID-19 di Indonesia
       </h1>
-      <p class="mt-3 text-indigo-500">
+      <p class="mt-3 text-indigo-500 md:text-center">
         Metode Fuzzy Time Series Model Chen
       </p>
     </div>

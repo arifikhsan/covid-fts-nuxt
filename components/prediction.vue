@@ -6,12 +6,12 @@
     </div>
     <div
       style="min-height: 16rem"
-      class="flex items-center justify-center border border-indigo-400"
+      class="flex items-center justify-center"
     >
       <div v-if="state.loading">
         <loading />
       </div>
-      <div v-if="done" class="overflow-auto">
+      <div v-if="done" class="w-full overflow-auto">
         <line-chart :chart-data="chartdata" :options="options"></line-chart>
       </div>
     </div>
@@ -311,6 +311,8 @@ export default {
       };
 
       this.options = {
+        responsive: true,
+        // maintainAspectRatio: false,
         scales: {
           yAxes: [
             {
