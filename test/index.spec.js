@@ -10,6 +10,8 @@ describe("Index page", () => {
     const { body } = await get('/')
 
     expect(body).toContain('aktif')
+    expect(body).toContain('Grafik Prediksi')
+    expect(body).toContain('Hasil Prediksi')
   });
 });
 
