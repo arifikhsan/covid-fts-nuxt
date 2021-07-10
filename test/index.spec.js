@@ -6,7 +6,7 @@ describe("Index page", () => {
     setupTimeout: 5 * 60 * 1000
   });
 
-  test("it contain aktif", async () => {
+  test("it contain correct titles", async () => {
     const { body } = await get("/");
 
     expect(body).toContain("Peramalan Kasus Aktif COVID-19 di Indonesia");
