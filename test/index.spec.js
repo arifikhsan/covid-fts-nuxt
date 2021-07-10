@@ -7,11 +7,11 @@ describe("Index page", () => {
   });
 
   test("it contain aktif", async () => {
-    const { body } = await get('/')
+    const { body } = await get("/");
 
-    expect(body).toContain('aktif')
-    expect(body).toContain('Grafik Prediksi')
-    expect(body).toContain('Hasil Prediksi')
+    expect(body).toContain("Peramalan Kasus Aktif COVID-19 di Indonesia");
+    // expect(body).toContain("aktif");
+    // expect(body).toContain("Grafik Prediksi");
+    // expect(body).toContain("Hasil Prediksi");
   });
 });
-
