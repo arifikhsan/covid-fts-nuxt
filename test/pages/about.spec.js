@@ -6,7 +6,7 @@ describe("About page", () => {
     setupTimeout: 5 * 60 * 1000
   });
 
-  test("it contain about", async () => {
+  it("contains about", async () => {
     const { body } = await get('/about')
 
     expect(body).toContain('about')
