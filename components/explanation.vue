@@ -3,7 +3,7 @@
     <client-only>
       <div class="p-4">
         <h2 class="text-xl font-semibold text-indigo-600">Hasil Prediksi</h2>
-        <span v-if="todayCase" class="text-sm"
+        <span v-show="todayCase" class="text-sm"
           >Berdasarkan data historis dari
           {{ humanizeDate(firstCase.date_time) }} sampai
           {{ humanizeDate(lastCase.date_time) }}.</span
@@ -71,6 +71,9 @@ export default {
     return {
       isOpen: false
     };
+  },
+  created() {
+    console.log(this.series)
   },
   computed: {
     ...mapGetters(["series"]),
