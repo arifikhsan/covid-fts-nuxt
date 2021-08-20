@@ -237,7 +237,7 @@ export default {
       this.state.dataObtained = true;
       this.state.loading = false;
 
-      console.log(jsonCases);
+      // console.log(jsonCases);
     },
     async getLiveSeries() {
       this.state.loading = true;
@@ -436,30 +436,31 @@ export default {
       // console.table(this.series);
 
       // MAPE
-      for (let i = 0; i < this.series.length; i++) {
-        let seri = this.series[i];
+      // for (let i = 0; i < this.series.length; i++) {
+      //   let seri = this.series[i];
 
-        if (i !== 0) {
-          let mape =
-            Math.abs(seri.active_cumulative - seri.forecast) /
-            seri.active_cumulative;
-          seri.mape = mape;
+      //   if (i !== 0) {
+      //     let mape =
+      //       Math.abs(seri.active_cumulative - seri.forecast) /
+      //       seri.active_cumulative;
+      //     seri.mape = mape;
 
-          // percentage %
-          seri.percentage = mape * 100;
-        } else {
-          seri.mape = 0;
-          seri.percentage = 0;
-        }
-      }
+      //     // percentage %
+      //     seri.percentage = mape * 100;
+      //   } else {
+      //     seri.mape = 0;
+      //     seri.percentage = 0;
+      //   }
+      // }
 
       // final result
 
-      let mapes = map(this.series, "mape");
-      mapes.shift();
-      mapes.pop();
+      // let mapes = map(this.series, "mape");
+      // mapes.shift();
+      // mapes.pop();
+
       // console.log(mapes);
-      this.finalMape = mapes.reduce((a, b) => a + b) / mapes.length;
+      // this.finalMape = mapes.reduce((a, b) => a + b) / mapes.length;
       // console.log(this.finalMape);
 
       // chart
@@ -533,7 +534,7 @@ export default {
       this.$store.commit("addIntervals", this.intervals);
       this.$store.commit("addGroups", this.groups);
       this.$store.commit("addForecasts", this.forecasts);
-      this.$store.commit("insertFinalMape", this.finalMape);
+      // this.$store.commit("insertFinalMape", this.finalMape);
     }
   }
 };
