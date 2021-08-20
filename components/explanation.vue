@@ -1,13 +1,16 @@
 <template>
   <div class="flex flex-col space-y-2">
-    <div class="p-4">
-      <h2 class="text-xl font-semibold text-indigo-600">Hasil Prediksi</h2>
-      <span v-if="todayCase" class="text-sm"
-        >Berdasarkan data historis dari
-        {{ humanizeDate(firstCase.date_time) }} sampai
-        {{ humanizeDate(lastCase.date_time) }}.</span
-      >
-    </div>
+    <client-only>
+      <div class="p-4">
+        <h2 class="text-xl font-semibold text-indigo-600">Hasil Prediksi</h2>
+        <span v-if="todayCase" class="text-sm"
+          >Berdasarkan data historis dari
+          {{ humanizeDate(firstCase.date_time) }} sampai
+          {{ humanizeDate(lastCase.date_time) }}.</span
+        >
+      </div>
+    </client-only>
+
     <div class="px-4">
       <div
         v-if="todayCase"
