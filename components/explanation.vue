@@ -13,7 +13,7 @@
         v-if="todayCase"
         class="flex flex-col space-y-2 lg:flex-col lg:space-x-0 lg:space-y-2 md:justify-between md:flex-row md:space-y-0 md:space-x-6"
       >
-        <div class="md:w-1/2 lg:w-full">
+        <!-- <div class="md:w-1/2 lg:w-full">
           <h3 class="text-lg font-semibold text-indigo-500">
             Periode terakhir
           </h3>
@@ -21,7 +21,7 @@
             <p>Tanggal: {{ humanizeDate(todayCase.date_time) }}</p>
             <p>Kasus Aktif: {{ todayCase.active_cumulative }}</p>
           </div>
-        </div>
+        </div> -->
         <div class="md:w-1/2 lg:w-full">
           <h3 class="text-lg font-semibold text-indigo-500">
             Periode selanjutnya
@@ -31,6 +31,7 @@
             <p>Kasus Aktif: {{ nextDayCase.forecast }}</p>
           </div>
         </div>
+        <accuracy />
       </div>
       <div v-else><loading /></div>
     </div>
@@ -51,6 +52,7 @@
 <script>
 import { mapGetters } from "vuex";
 import Loading from "@/components/loading";
+import Accuracy from "@/components/accuracy";
 import ChevronDoubleDownIcon from "@/components/icon/chevron-double-down-icon.vue";
 import ChevronDoubleUpIcon from "@/components/icon/chevron-double-up-icon.vue";
 import { dateOptions } from "@/config/dateOptions";
@@ -58,6 +60,7 @@ import { dateOptions } from "@/config/dateOptions";
 export default {
   components: {
     loading: Loading,
+    accuracy: Accuracy,
     "chevron-double-down-icon": ChevronDoubleDownIcon,
     "chevron-double-up-icon": ChevronDoubleUpIcon
   },

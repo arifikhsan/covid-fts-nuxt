@@ -73,7 +73,7 @@ export default {
         cases: [
           {
             id: "611dc3abc3b4c700041b7c5a",
-            active_cumulative: 543203,
+            active_cumulative: 343203,
             date_time: "2021-08-18T00:00:00.000Z"
           },
           {
