@@ -73,7 +73,7 @@ export default {
     };
   },
   created() {
-    console.log(this.series)
+    // console.log(this.series)
   },
   computed: {
     ...mapGetters(["series"]),

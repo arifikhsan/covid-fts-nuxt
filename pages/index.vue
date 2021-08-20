@@ -16,7 +16,7 @@
       </div>
       <div class="lg:w-1/3">
         <explanation />
-        <div class="lg:show">
+        <div class="hidden lg:show">
           <about />
         </div>
       </div>
