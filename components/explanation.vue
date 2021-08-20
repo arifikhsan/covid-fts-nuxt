@@ -4,34 +4,24 @@
       <div class="p-4">
         <h2 class="text-xl font-semibold text-indigo-600">Hasil Prediksi</h2>
         <span v-show="todayCase" class="text-sm"
-          >Berdasarkan data historis dari
-          {{ humanizeDate(firstCase.date_time) }} sampai
-          {{ humanizeDate(lastCase.date_time) }}.</span
+          >Berdasarkan data historis dari {{ firstCase() }} sampai
+          {{ lastCase() }}.</span
         >
       </div>
     </client-only>
 
     <div class="px-4">
       <div
-        v-if="todayCase"
+        v-if="todayCase()"
         class="flex flex-col space-y-2 lg:flex-col lg:space-x-0 lg:space-y-2 md:justify-between md:flex-row md:space-y-0 md:space-x-6"
       >
-        <!-- <div class="md:w-1/2 lg:w-full">
-          <h3 class="text-lg font-semibold text-indigo-500">
-            Periode terakhir
-          </h3>
-          <div class="text-gray-800">
-            <p>Tanggal: {{ humanizeDate(todayCase.date_time) }}</p>
-            <p>Kasus Aktif: {{ todayCase.active_cumulative }}</p>
-          </div>
-        </div> -->
         <div class="md:w-1/2 lg:w-full">
           <h3 class="text-lg font-semibold text-indigo-500">
             Periode selanjutnya
           </h3>
           <div class="text-gray-800">
-            <p>Tanggal: {{ humanizeDate(nextDayCase.date_time) }}</p>
-            <p>Kasus Aktif: {{ nextDayCase.forecast }}</p>
+            <p>Tanggal: {{ nextDayCase() }}</p>
+            <p>Kasus Aktif: {{ nextDayCaseForecast() }}</p>
           </div>
         </div>
         <accuracy />
@@ -40,17 +30,6 @@
     </div>
   </div>
 </template>
-
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>
 
 <script>
 import { mapGetters } from "vuex";
@@ -73,26 +52,29 @@ export default {
     };
   },
   created() {
-    // console.log(this.series)
+    // console.log(this.series[0]);
   },
   computed: {
-    ...mapGetters(["series"]),
-    todayCase() {
-      return this.series[this.series.length - 2];
-    },
-    nextDayCase() {
-      return this.series[this.series.length - 1];
-    },
-    firstCase() {
-      return this.series[0];
-    },
-    lastCase() {
-      return this.series[this.series.length - 2];
-    }
+    ...mapGetters(["series"])
   },
   methods: {
     humanizeDate(date) {
       return new Date(date).toLocaleDateString("id-ID", dateOptions);
+    },
+    firstCase() {
+      return this.humanizeDate(this.series[0].date_time);
+    },
+    lastCase() {
+      return this.humanizeDate(this.series[this.series.length - 2].date_time);
+    },
+    todayCase() {
+      return this.series[this.series.length - 2];
+    },
+    nextDayCase() {
+      return this.humanizeDate(this.series[this.series.length - 1]);
+    },
+    nextDayCaseForecast() {
+      return this.series[this.series.length - 1].forecast;
     }
   }
 };
