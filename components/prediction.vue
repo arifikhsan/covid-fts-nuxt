@@ -57,11 +57,11 @@ export default {
     };
   },
   async created() {
-    // if (process.env.NODE_ENV === "production") {
-    //   await this.getLiveSeries();
-    // } else {
-    await this.getStaticSeries();
-    // }
+    if (process.env.NODE_ENV === "production") {
+      await this.getLiveSeries();
+    } else {
+      await this.getStaticSeries();
+    }
     await this.predictCovid();
     this.updateVuex();
   },
