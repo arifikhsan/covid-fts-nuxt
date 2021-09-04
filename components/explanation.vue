@@ -60,19 +60,38 @@ export default {
       return new Date(date).toLocaleDateString("id-ID", dateOptions);
     },
     firstCase() {
-      return this.humanizeDate(this.series[0].date_time);
+      if (this.series[0]) {
+        const date_time = this.series[0].date_time;
+        return this.humanizeDate(date_time);
+      } else {
+        return '';
+      }
     },
     lastCase() {
-      return this.humanizeDate(this.series[this.series.length - 2].date_time);
+      if (this.series[this.series.length - 2]) {
+        const date_time = this.series[this.series.length - 2].date_time;
+        return this.humanizeDate();
+      } else {
+        return '';
+      }
     },
     todayCase() {
-      return this.series[this.series.length - 2];
+      return this.series[this.series.length - 2] || '';
     },
     nextDayCase() {
-      return this.humanizeDate(this.series[this.series.length - 1]);
+      if (this.series) {
+        const date_time = this.series[this.series.length - 1];
+        return this.humanizeDate(date_time);
+      } else {
+        return '';
+      }
     },
     nextDayCaseForecast() {
-      return this.series[this.series.length - 1].forecast;
+      if (this.series) {
+        return this.series[this.series.length - 1].forecast;
+      } else {
+        return '';
+      }
     }
   }
 };
