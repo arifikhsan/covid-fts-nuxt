@@ -70,7 +70,7 @@ export default {
     lastCase() {
       if (this.series[this.series.length - 2]) {
         const date_time = this.series[this.series.length - 2].date_time;
-        return this.humanizeDate();
+        return this.humanizeDate(date_time);
       } else {
         return '';
       }
