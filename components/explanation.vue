@@ -81,7 +81,6 @@ export default {
     nextDayCase() {
       if (this.series) {
         const date_time = this.series[this.series.length - 1].date_time;
-        console.log(date_time);
         return this.humanizeDate(date_time);
       } else {
         return '';
