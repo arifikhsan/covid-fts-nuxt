@@ -1,14 +1,12 @@
 <template>
   <div class="flex flex-col space-y-2">
-    <client-only>
-      <div class="p-4">
-        <h2 class="text-xl font-semibold text-indigo-600">Hasil Prediksi</h2>
-        <span v-show="todayCase" class="text-sm"
-          >Berdasarkan data historis dari {{ firstCase() }} sampai
-          {{ lastCase() }}.</span
-        >
-      </div>
-    </client-only>
+    <div class="p-4">
+      <h2 class="text-xl font-semibold text-indigo-600">Hasil Prediksi</h2>
+      <span v-show="todayCase" class="text-sm"
+        >Berdasarkan data historis dari {{ firstCase() }} sampai
+        {{ lastCase() }}.</span
+      >
+    </div>
 
     <div class="px-4">
       <div
@@ -52,7 +50,7 @@ export default {
     };
   },
   created() {
-    // console.log(this.series[0]);
+    console.log(this.series[0]);
   },
   computed: {
     ...mapGetters(["series"])
