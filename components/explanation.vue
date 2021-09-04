@@ -50,7 +50,7 @@ export default {
     };
   },
   created() {
-    console.log(this.series[0]);
+    // console.log(this.series[0]);
   },
   computed: {
     ...mapGetters(["series"])
