@@ -4,9 +4,8 @@
       Uji Ketepatan Peramalan
     </h3>
     <div class="text-gray-800">
-      <p>MAPE: {{ mape }}%</p>
-      <p>MAE: {{ mae }}</p>
-      <p>MSE: {{ mse }}</p>
+      <p><abbr title="Mean Absolute Percentage Error">MAPE</abbr>: {{ mape }}%</p>
+      <p>Akurasi: {{ showAccuracy }}</p>
     </div>
   </div>
 </template>
@@ -17,7 +16,20 @@ import { mean } from "lodash";
 
 export default {
   computed: {
-    ...mapGetters(["series"])
+    ...mapGetters(["series"]),
+    showAccuracy() {
+      if (this.mape < 10) {
+        return 'Peramalan sangat akurat';
+      } else if (this.mape >= 10 && this.mape < 20) {
+        return 'Peramalan baik';
+      } else if (this.mape >= 20 && this.mape < 50) {
+        return 'Peramalan layak';
+      } else if (this.mape >= 50) {
+        return 'Peramalan kurang akurat';
+      } else {
+        return 'Loading...';
+      }
+    }
   },
   data() {
     return {

@@ -28,7 +28,12 @@ export default {
   },
   computed: {
     now() {
-      return new Date().toLocaleDateString("id-ID", dateOptions);
+      if (process.env.NODE_ENV == 'development') {
+
+        return new Date('2021-08-18').toLocaleDateString("id-ID", dateOptions);
+      } else {
+        return new Date().toLocaleDateString("id-ID", dateOptions);
+      }
     },
     counter() {
       return this.$store.state.counter;
@@ -71,11 +76,11 @@ export default {
 
       let jsonCases = {
         cases: [
-          {
-            id: "611dc3abc3b4c700041b7c5a",
-            active_cumulative: 343203,
-            date_time: "2021-08-18T00:00:00.000Z"
-          },
+          // {
+          //   id: "611dc3abc3b4c700041b7c5a",
+          //   active_cumulative: 343203,
+          //   date_time: "2021-08-18T00:00:00.000Z"
+          // },
           {
             id: "611dc3abc3b4c700041b7c59",
             active_cumulative: 358357,
@@ -101,41 +106,41 @@ export default {
             active_cumulative: 400129,
             date_time: "2021-08-13T00:00:00.000Z"
           },
-          {
-            id: "611764426ec7c40004092b16",
-            active_cumulative: 400129,
-            date_time: "2021-08-13T00:00:00.000Z"
-          },
+          // {
+          //   id: "611764426ec7c40004092b16",
+          //   active_cumulative: 400129,
+          //   date_time: "2021-08-13T00:00:00.000Z"
+          // },
           {
             id: "611764416ec7c40004092b12",
             active_cumulative: 412776,
             date_time: "2021-08-12T00:00:00.000Z"
           },
-          {
-            id: "611764426ec7c40004092b15",
-            active_cumulative: 412776,
-            date_time: "2021-08-12T00:00:00.000Z"
-          },
+          // {
+          //   id: "611764426ec7c40004092b15",
+          //   active_cumulative: 412776,
+          //   date_time: "2021-08-12T00:00:00.000Z"
+          // },
           {
             id: "611764416ec7c40004092b10",
             active_cumulative: 426170,
             date_time: "2021-08-11T00:00:00.000Z"
           },
-          {
-            id: "611764416ec7c40004092b13",
-            active_cumulative: 426170,
-            date_time: "2021-08-11T00:00:00.000Z"
-          },
+          // {
+          //   id: "611764416ec7c40004092b13",
+          //   active_cumulative: 426170,
+          //   date_time: "2021-08-11T00:00:00.000Z"
+          // },
           {
             id: "611764416ec7c40004092b11",
             active_cumulative: 437055,
             date_time: "2021-08-10T00:00:00.000Z"
           },
-          {
-            id: "611764416ec7c40004092b0f",
-            active_cumulative: 437055,
-            date_time: "2021-08-10T00:00:00.000Z"
-          },
+          // {
+          //   id: "611764416ec7c40004092b0f",
+          //   active_cumulative: 437055,
+          //   date_time: "2021-08-10T00:00:00.000Z"
+          // },
           {
             id: "6111df3a319ed7000440bc0a",
             active_cumulative: 448508,
@@ -220,7 +225,32 @@ export default {
             id: "61055985427c2500041ad171",
             active_cumulative: 574135,
             date_time: "2021-07-24T00:00:00.000Z"
-          }
+          },
+          {
+            id: "61055985427c2500041ad170",
+            active_cumulative: 569901,
+            date_time: "2021-07-23T00:00:00.000Z"
+          },
+          {
+            id: "61055984427c2500041ad16f",
+            active_cumulative: 561384,
+            date_time: "2021-07-22T00:00:00.000Z"
+          },
+          {
+            id: "60f82f59e79dd5000487911d",
+            active_cumulative: 549694,
+            date_time: "2021-07-21T00:00:00.000Z"
+          },
+          {
+            id: "60f82f59e79dd5000487911c",
+            active_cumulative: 550192,
+            date_time: "2021-07-20T00:00:00.000Z"
+          },
+          {
+            id: "60f566aca5f8160004f7dc97",
+            active_cumulative: 542938,
+            date_time: "2021-07-19T00:00:00.000Z"
+          },
         ]
       };
       this.series = [];
@@ -426,7 +456,7 @@ export default {
 
           this.series.push({
             label,
-            forecast: Math.floor(forecast.forecast),
+            forecast: Math.ceil(forecast.forecast),
             date_time: lastDate.toISOString()
           });
         }
