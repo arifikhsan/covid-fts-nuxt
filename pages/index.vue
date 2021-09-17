@@ -6,7 +6,7 @@
       >
         Peramalan Kasus Aktif COVID-19 di Indonesia
       </h1>
-      <p class="mt-3 text-indigo-500 md:text-center">
+      <p class="mt-3 md:text-center">
         Metode Fuzzy Time Series Model Chen
       </p>
     </div>
