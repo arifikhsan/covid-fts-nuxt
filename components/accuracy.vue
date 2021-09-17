@@ -67,7 +67,7 @@ export default {
       const absolute_errors = filtered_series.map(seri => seri.absolute_error);
       const squared_errors = filtered_series.map(seri => seri.error_squared);
 
-      this.mape = mean(absolute_pes).toFixed(3);
+      this.mape = mean(absolute_pes).toFixed(2);
       this.mae = mean(absolute_errors).toFixed(2);
       this.mse = mean(squared_errors).toFixed(2);
     },
