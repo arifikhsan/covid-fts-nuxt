@@ -28,12 +28,12 @@ export default {
   },
   computed: {
     now() {
-      if (process.env.NODE_ENV == 'development') {
+      // if (process.env.NODE_ENV == 'development') {
 
         return new Date('2021-08-18').toLocaleDateString("id-ID", dateOptions);
-      } else {
-        return new Date().toLocaleDateString("id-ID", dateOptions);
-      }
+      // } else {
+      //   return new Date().toLocaleDateString("id-ID", dateOptions);
+      // }
     },
     counter() {
       return this.$store.state.counter;
@@ -62,11 +62,11 @@ export default {
     };
   },
   async created() {
-    if (process.env.NODE_ENV === "production") {
-      await this.getLiveSeries();
-    } else {
+    // if (process.env.NODE_ENV === "production") {
+    //   await this.getLiveSeries();
+    // } else {
       await this.getStaticSeries();
-    }
+    // }
     await this.predictCovid();
     this.updateVuex();
   },
