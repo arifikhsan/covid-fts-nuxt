@@ -63,7 +63,7 @@ export default {
     },
     calculateAccuracy() {
       const filtered_series = this.series.filter(seri => seri.error != 0);
-      const absolute_pes = filtered_series.map(seri => seri.absolute_pe);
+      const absolute_pes = filtered_series.map(seri => seri.absolute_pe).filter(Number);
       const absolute_errors = filtered_series.map(seri => seri.absolute_error);
       const squared_errors = filtered_series.map(seri => seri.error_squared);
 
